@@ -1,0 +1,11 @@
+# Database file
+db.sqlite3
+
+# Compiled Python bytecode
+*.pyc
+
+# Media folder (adjust path if different)
+media/*
+
+# Environment variable file (if applicable)
+.env
