@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %} 
+{% block title %}{{ lesson.title }}{% endblock title %} 
+{% block content %}
+<div class="content-container">
+  <!-- Sidebar -->
+  {% include 'courses/sidebar.html' %}
+  <p
+    id="id-holder"
+    data-lesson-id="{{ lesson.id }}"
+    data-course-id="{{ course.id }}"
+    style="display: none"
+  ></p>
+  <!-- Content -->
+  {{ content | safe }}
+</div>
+<script>
+  // Ensure this script runs after the DOM is fully loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    const csrftoken = "{{ csrf_token }}";
+    $(window).scroll(function () {
+      var scrollHeight = $(document).height();
+      var scrollTop = $(window).scrollTop();
+      var windowHeight = $(window).height();
+      var isProcessingRequest = false;
+      var id_holder = $("#id-holder");
+      var ids = {
+        course_id: id_holder.data("courseId"),
+        lesson_id: id_holder.data("lessonId"),
+      };
+
+      if (scrollTop + windowHeight >= scrollHeight && !isProcessingRequest) {
+        isProcessingRequest = true;
+        $.ajax({
+          url:
+            "/courses/cat_course/" +
+            ids.course_id +
+            "/lesson/" +
+            ids.lesson_id +
+            "/completed",
+          type: "POST",
+          headers: {
+            "X-CSRFToken": csrftoken,
+          },
+          data: {},
+          success: function (response) {
+            console.log("Lesson completed successfully:", response);
+            isProcessingRequest = false;
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            // Handle errors (e.g., display error message to user)
+            console.error(
+              "Error adding lesson to completed list:",
+              textStatus,
+              errorThrown
+            );
+            isProcessingRequest = false; // Reset flag for future requests
+          },
+        });
+      }
+    });
+  });
+</script>
+{% endblock content %}

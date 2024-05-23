@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %} 
+{% load static %} 
+{% block title %}CategoryCourses{% endblock title %} 
+{% block content %}
+<main class="container py-3 mt-3">
+  <h1 class="text-capitalize mb-3">{{ category.name }} Courses</h1>
+  <div class="row g-3 justify-content-around my-3">
+    {% for course in courses %}
+    <div
+      class="col-lg-4 col-md-6 col-sm-12 mb-5 wow zoomIn"
+      data-wow-delay="0.1s"
+      style="max-height: 200px; max-width: 300px;"
+    >
+      <div style="min-height: 100%">
+        <a
+          class="position-relative d-block overflow-hidden"
+          href="{% url 'courses:lesson' id=course.id  lsn_id='0' %}"
+        >
+          <img
+            class="img-fluid"
+            src="{{ course.icon.url }}"
+            alt=""
+            style="min-width: 100%; height: 220px"
+          />
+          <div
+            class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3"
+            style="margin: 1px; border: 1px solid #06bbcc"
+          >
+            <h5 class="m-0 text-capitalize">{{ course.name }}</h5>
+          </div>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</main>
+{% endblock content %}

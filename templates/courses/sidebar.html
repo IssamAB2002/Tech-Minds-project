@@ -1,0 +1,9 @@
+<div class="sidebar shadow">
+    <!-- here the role of the resources list -->
+  
+  {% for lsn in course_lessons %}
+    <a class="p-3 my-0 border-bottom" href="{% url 'courses:lesson' course.id lsn.id %}">{{ lsn.title }}</a>
+  {% endfor %}
+    
+
+</div>
